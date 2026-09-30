@@ -10,3 +10,10 @@ add_subdirectory(src)
 
 include(CTest)
 add_subdirectory(tests)
+
+# Benchmarks are disabled by default
+option(BIGINT_BUILD_BENCHMARKS "Build BigInt benchmarks" ON)
+
+if(BIGINT_BUILD_BENCHMARKS)
+    add_subdirectory(benchmarks)
+endif()

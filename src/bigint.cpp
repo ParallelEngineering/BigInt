@@ -135,11 +135,11 @@ void operations::BigInt::mul(const ByteArray &b) noexcept {
         std::uint64_t carry = 0;
         std::uint64_t valA = data[i];
 
+        std::uint64_t n1 = valA >> 32;
+        std::uint64_t n2 = valA & 0xFFFFFFFFULL;
+
         for (size_t j = 0; j < size_b; ++j) {
             std::uint64_t valB = b[j];
-
-            std::uint64_t n1 = valA >> 32;
-            std::uint64_t n2 = valA & 0xFFFFFFFFULL;
 
             std::uint64_t n3 = valB >> 32;
             std::uint64_t n4 = valB & 0xFFFFFFFFULL;
