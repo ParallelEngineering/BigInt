@@ -133,58 +133,58 @@ void operations::BigInt::mul(const ByteArray &b) noexcept {
 
     for (size_t i = 0; i < size_a; ++i) {
         std::uint64_t carry = 0;
-        std::uint64_t valA = data[i];
+        const std::uint64_t valA = data[i];
+
+        const std::uint64_t n1 = valA >> 32;
+        const std::uint64_t n2 = valA & 0xFFFFFFFFULL;
 
         for (size_t j = 0; j < size_b; ++j) {
-            std::uint64_t valB = b[j];
+            const std::uint64_t valB = b[j];
 
-            std::uint64_t n1 = valA >> 32;
-            std::uint64_t n2 = valA & 0xFFFFFFFFULL;
+            const std::uint64_t n3 = valB >> 32;
+            const std::uint64_t n4 = valB & 0xFFFFFFFFULL;
 
-            std::uint64_t n3 = valB >> 32;
-            std::uint64_t n4 = valB & 0xFFFFFFFFULL;
-
-            std::uint64_t r1 = n1 * n3;
+            const std::uint64_t r1 = n1 * n3;
             std::uint64_t r2 = n2 * n4;
-            std::uint64_t r3 = n1 * n4;
-            std::uint64_t r4 = n2 * n3;
+            const std::uint64_t r3 = n1 * n4;
+            const std::uint64_t r4 = n2 * n3;
 
-            std::uint64_t c1 = r1 >> 32;
-            std::uint64_t c2 = r3 >> 32;
-            std::uint64_t fr1 = (r1 << 32) | (r3 & 0xFFFFFFFFULL);
-            std::uint64_t fc1 = (c1 << 32) | c2;
+            const std::uint64_t c1 = r1 >> 32;
+            const std::uint64_t c2 = r3 >> 32;
+            const std::uint64_t fr1 = (r1 << 32) | (r3 & 0xFFFFFFFFULL);
+            const std::uint64_t fc1 = (c1 << 32) | c2;
 
-            std::uint64_t c3 = r2 >> 32;
+            const std::uint64_t c3 = r2 >> 32;
             r2 &= 0xFFFFFFFFULL;
-            std::uint64_t c4 = r4 >> 32;
-            std::uint64_t fr2 = (r4 << 32) | r2;
-            std::uint64_t fc2 = c3 | (c4 << 32);
+            const std::uint64_t c4 = r4 >> 32;
+            const std::uint64_t fr2 = (r4 << 32) | r2;
+            const std::uint64_t fc2 = c3 | (c4 << 32);
 
             std::uint64_t fl = fr2;
             std::uint64_t runningCarry = 0;
-            std::uint64_t valFL = fc2 << 32;
+            const std::uint64_t valFL = fc2 << 32;
             fl += valFL;
             if (valFL > fl) {
                 runningCarry += 1ULL;
             }
 
-            std::uint64_t valFH = fr1 << 32;
+            const std::uint64_t valFH = fr1 << 32;
             fl += valFH;
             if (valFH > fl) {
                 runningCarry += 1ULL;
             }
 
-            std::uint64_t fh = (fc2 >> 32) + (fr1 >> 32) + fc1 + runningCarry;
+            const std::uint64_t fh = (fc2 >> 32) + (fr1 >> 32) + fc1 + runningCarry;
 
 
-            std::uint64_t current = result[i + j];
+            const std::uint64_t current = result[i + j];
 
             std::uint64_t sum_low = current + fl;
-            std::uint64_t carry_out1 = (sum_low < current) ? 1ULL : 0ULL;
+            const std::uint64_t carry_out1 = (sum_low < current) ? 1ULL : 0ULL;
 
-            std::uint64_t sum_low_prev = sum_low;
+            const std::uint64_t sum_low_prev = sum_low;
             sum_low += carry;
-            std::uint64_t carry_out2 = (sum_low < sum_low_prev) ? 1ULL : 0ULL;
+            const std::uint64_t carry_out2 = (sum_low < sum_low_prev) ? 1ULL : 0ULL;
 
             result[i + j] = sum_low;
 
